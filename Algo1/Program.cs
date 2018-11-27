@@ -12,26 +12,6 @@ namespace Quicksort
         static void Main(string[] args)
         {
 
-            //       //------------------------------------------------------
-            //        //Generate Random Numbers
-            //        List<int> unSorted = generateNumbers(50000);
-            //
-            //        Console.WriteLine("Original array elements:");
-            //        foreach (int i in unSorted){
-            //            Console.Write(i + " ");
-            //        }
-
-            //        //------------------------------------------------------
-
-            //        List<int> sorted;
-            //        sorted = sequentialMergeSort(unSorted);
-
-            //      Console.WriteLine("\n\nSorted array elements: ");
-            //        foreach (int i in sorted)
-            //        {
-            //            Console.Write(i + " ");
-            //       }
-
             int[] dataSize = { 1, 2, 10, 100, 1000, 10000, 50000 };
 
             foreach (int size in dataSize)
@@ -76,8 +56,6 @@ namespace Quicksort
 
             }
      
-
-
 
         }
 
@@ -148,7 +126,6 @@ namespace Quicksort
         }
 
 
-
         public static List<int> generateNumbers(int size)
         {
 
@@ -177,9 +154,6 @@ namespace Quicksort
             }
             return unOrderedList;
         }
-
-
-
 
     }
 }
