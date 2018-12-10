@@ -1,87 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace Algo1
+using System.IO;
+using System.Diagnostics;
+namespace NameSort
 {
+    class name
+    {
+        public name(string fname, string lname)
+        {
+            this.firstName = fname; this.lastName = lname;
+        }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-
-            int[] dataSize = { 1, 2, 10,20, 1000000 };
-
-            foreach (int size in dataSize)
+            List<name> Names = new List<name>();
+            // populate the list of names from a file
+            using (StreamReader sr = new StreamReader("names.txt"))
             {
-                //------------------------------------------------------
-                int[] unOrderedList = Utils.generateNumbers2(size);
-                int[] ListSerial = unOrderedList.ToArray();
-                int[] ListParallel = unOrderedList.ToArray();
-
-
-                Console.WriteLine("\n\n Quick Sort: ");
-                Console.WriteLine("Data Size ={0}: ", size);
-
-                Console.WriteLine("\nOriginal array elements:\n");
-                for (int i = 0; i < unOrderedList.Length; i++)
+                while (sr.Peek() >= 0)
                 {
-                    Console.Write(unOrderedList[i] + " ");
+                    string[] s = sr.ReadLine().Split(' ');
+                    Names.Add(new name(s[0], s[1]));
                 }
-                // Console.WriteLine("\n----------------------------------------------\n");
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                //QuickSort.Quick_Sort(ListSerial, 0, unOrderedList.Length - 1);
-                BubbleSort.SortSerial(ListSerial);
-                sw.Stop();
-
-                Console.WriteLine("\nSerial Time={0}", sw.Elapsed.TotalMilliseconds);
-                // Console.WriteLine("\n----------------------------------------------\n");
-
-
-                Console.WriteLine("\n Ordered array elements:\n");
-                foreach (var item in ListSerial)
-                {
-                    Console.Write(" " + item);
-                }
-
-                //   Console.WriteLine("\n----------------------------------------------\n");
-
-
-                //    Console.WriteLine("\nOriginal array elements:\n");
-                //    for (int i = 0; i < unOrderedList.Length; i++)
-                //    {
-                //       Console.Write(unOrderedList[i] + " ");
-                //   }
-
-                Stopwatch sw1 = new Stopwatch();
-                sw1.Start();
-                QuickSort.QuicksortParallel(ListParallel, 0, unOrderedList.Length - 1);
-                sw.Stop();
-                Console.WriteLine("\nParallel Time={0}", sw1.Elapsed.TotalMilliseconds);
-            //    Console.WriteLine("\n----------------------------------------------\n");
-
-
-            //    Console.WriteLine("\n Ordered array elements:\n");
-              //  foreach (var item in ListParallel)
-              //  {
-              //      Console.Write(" " + item);
-             //   }
-             //   Console.WriteLine("\n----------------------------------------------\n");
-
-
-
             }
-     
+            Console.WriteLine("Sorting...");
+            // time the sort.
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            List<name> sortedNames = Names.OrderBy(s => s.lastName).ThenBy(s => s.firstName).ToList();
+            stopwatch.Stop();
+            Console.WriteLine("Sorted List", sortedNames);
+            //foreach (var el in sortednames)
+            //{
+            //    console.writeline(el.lastname + ", " + el.firstname);
+            //}
+            Console.WriteLine("Default sorting code took {0} milliseconds to execute", stopwatch.ElapsedMilliseconds);
 
+            List<String> allNames = new List<String>();
+            foreach (var el in Names) {
+                allNames.Add(el.lastName + " " + el.firstName);
+            }
+
+            Stopwatch stopwatch1 = Stopwatch.StartNew();
+            Algo1.QuickSort.Quicksort(allNames, 0, allNames.Count-1);
+            stopwatch1.Stop();
+
+            Console.WriteLine("Quick Sort code took {0} milliseconds to execute", stopwatch1.ElapsedMilliseconds);
+
+
+            List<String> allNames2 = new List<String>();
+            foreach (var el in Names)
+            {
+                allNames2.Add(el.lastName + " " + el.firstName);
+            }
+            Stopwatch stopwatch2 = Stopwatch.StartNew();
+            Algo1.QuickSort.QuicksortParallel(allNames, 0, allNames.Count - 1);
+            stopwatch1.Stop();
+
+            Console.WriteLine("Quick Sort Parallel code took {0} milliseconds to execute", stopwatch2.ElapsedMilliseconds);
+
+
+
+
+
+            Console.WriteLine("Press Return to exit");
+            Console.ReadLine();
         }
-
-       
-
-
-
-
     }
-}
+}
